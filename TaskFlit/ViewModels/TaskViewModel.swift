@@ -7,13 +7,10 @@
 
 import Foundation
 
-// @Observable é o recurso moderno do iOS 17+ para monitorar mudanças de estado
 @Observable
 class TaskViewModel {
-    // 1. A fonte da verdade: nossa lista de tarefas na memória
     var allTasks: [TaskItem] = []
     
-    // 2. Filtro selecionado atualmente (Todas, Pendentes, Concluídas)
     var selectedFilter: AppFilter = .all
     
     enum AppFilter: String, CaseIterable, Identifiable {
@@ -23,18 +20,14 @@ class TaskViewModel {
         
         var id: String { self.rawValue }
     }
-    
-    // 3. Inicializador: Carrega os dados assim que a ViewModel nasce
+
     init() {
         fetchTasks()
     }
     
     func fetchTasks() {
-        // Busca as tarefas que decodificamos do JSON no StorageService
         self.allTasks = StorageService.loadMockTasks()
     }
-    
-    // 4. Variável Computada Inteligente: Entrega a lista já filtrada para a View
     var filteredTasks: [TaskItem] {
         switch selectedFilter {
         case .all:
@@ -46,16 +39,25 @@ class TaskViewModel {
         }
     }
     
-    // 5. Função para alternar o status da tarefa
     func toggleTaskCompletion(task: TaskItem) {
         if let index = allTasks.firstIndex(where: { $0.id == task.id }) {
             allTasks[index].isCompleted.toggle()
         }
     }
-    
-    // Adicione essa função dentro da sua class TaskViewModel
+
     func addTask(_ task: TaskItem) {
-        // Insere a nova tarefa no topo da lista (índice 0)
         allTasks.insert(task, at: 0)
+    }
+    
+    func deleteTask(at offsets: IndexSet) {
+        // 1. Descobre qual item foi arrastado usando o índice do filtro atual
+        for index in offsets {
+            let taskToDelete = filteredTasks[index]
+            
+            // 2. Remove o item correspondente da nossa lista principal (allTasks)
+            if let mainIndex = allTasks.firstIndex(where: { $0.id == taskToDelete.id }) {
+                allTasks.remove(at: mainIndex)
+            }
+        }
     }
 }

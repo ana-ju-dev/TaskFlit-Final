@@ -35,15 +35,21 @@ struct TaskListView: View {
                             .listRowBackground(Color.clear)
                         } else {
                             ForEach(viewModel.filteredTasks) { task in
-                                TaskRowView(task: task)
-                                    .listRowSeparator(.visible)
-                                    .listRowBackground(Color(.secondarySystemBackground).opacity(0.4)) 
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
-                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                                            viewModel.toggleTaskCompletion(task: task)
+                                // Passamos a tarefa e criamos a ação de deletar direto no botão dela
+                                TaskRowView(task: task) {
+                                    // Encontra o índice dessa tarefa específica para apagar
+                                    if let index = viewModel.allTasks.firstIndex(where: { $0.id == task.id }) {
+                                        withAnimation(.easeInOut) {
+                                            viewModel.allTasks.remove(at: index)
                                         }
                                     }
+                                }
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                        viewModel.toggleTaskCompletion(task: task)
+                                    }
+                                }
                             }
                         }
                     }
