@@ -1,0 +1,24 @@
+
+[
+  {
+    "title": "Estudar SwiftUI com a Prof",
+    "description": "Aprender a decodificar arquivos JSON locais e entender o protocolo Codable.",
+    "dueDate": "2026-06-10T14:00:00Z",
+    "priority": "high",
+    "isCompleted": false
+  },
+  {
+    "title": "Treino na Academia",
+    "description": "Focar em cardio hoje.",
+    "dueDate": "2026-06-11T10:00:00Z",
+    "priority": "medium",
+    "isCompleted": false
+  },
+  {
+    "title": "Comprar pó de café",
+    "description": "Item essencial para sobrevivência dev.",
+    "dueDate": "2026-06-09T18:30:00Z",
+    "priority": "low",
+    "isCompleted": true
+  }
+]
