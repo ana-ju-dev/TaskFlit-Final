@@ -14,6 +14,7 @@ struct AddTaskView: View {
     @State private var description: String = ""
     @State private var dueDate: Date = Date()
     @State private var priority: TaskPriority = .medium
+    @State private var showErrorAlert: Bool = false
 
     var onSave: (TaskItem) -> Void
     
@@ -22,6 +23,11 @@ struct AddTaskView: View {
             Form {
                 Section(header: Text("Informações Básicas")) {
                     TextField("Título da tarefa", text: $title)
+                        .padding(showErrorAlert ? 8 : 0)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.red, lineWidth: showErrorAlert ? 2 : 0)
+                        )
                     TextField("Descrição (Opcional)", text: $description)
                 }
 
@@ -47,17 +53,24 @@ struct AddTaskView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Salvar") {
-                        let newTask = TaskItem(
-                            title: title,
-                            description: description,
-                            dueDate: dueDate,
-                            priority: priority,
-                            isCompleted: false
-                        )
-                        onSave(newTask)
-                        dismiss()
+                        if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            withAnimation(.spring(response: 0.2, dampingFraction: 0.2, blendDuration: 0.2)) {
+                                showErrorAlert = true
+                            }
+                        } else {
+                            showErrorAlert = false
+                            let newTask = TaskItem(
+                                title: title,
+                                description: description,
+                                dueDate: dueDate,
+                                priority: priority,
+                                isCompleted: false
+                            )
+                            onSave(newTask)
+                            dismiss()
+                        }
                     }
-                    .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+
                 }
             }
         }
