@@ -34,7 +34,7 @@ class UserProfileManager {
     static func getProfile() -> UserProfile {
         let defaults = UserDefaults.standard
         return UserProfile(
-            name: defaults.string(forKey: Keys.name) ?? "Usuário(a)",
+            name: defaults.string(forKey: Keys.name) ?? "",
             email: defaults.string(forKey: Keys.email) ?? "",
             age: defaults.string(forKey: Keys.age) ?? "",
             bio: defaults.string(forKey: Keys.bio) ?? ""

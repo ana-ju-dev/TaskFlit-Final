@@ -9,9 +9,23 @@ import SwiftUI
 
 @main
 struct TaskFlitApp: App {
-        var body: some Scene {
-            WindowGroup {
-                MainTabView() 
+    @State private var showSplash: Bool = true
+    
+    var body: some Scene {
+        WindowGroup {
+            if showSplash {
+                SplashView()
+                
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            withAnimation(.easeOut(duration: 0.5)) {
+                                showSplash = false
+                            }
+                        }
+                    }
+            } else {
+                MainTabView()
             }
         }
     }
+}

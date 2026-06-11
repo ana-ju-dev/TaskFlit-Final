@@ -10,19 +10,18 @@ import PhotosUI
 
 struct ProfileView: View {
     @State private var viewModel = ProfileViewModel()
-    
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var profileImage: Image? = nil
+    @FocusState private var isInputActive: Bool
     
     var body: some View {
         NavigationStack {
             Form {
-                // MARK: - Seção de Foto
                 Section {
                     HStack {
                         Spacer()
                         VStack {
-                            PhotosPicker(selection: $selectedItem, matching: .images) {
+                            PhotosPicker(selection: $selectedItem, matching: .images) { //foto de perfil
                                 if let profileImage {
                                     profileImage
                                         .resizable()
@@ -48,56 +47,57 @@ struct ProfileView: View {
                 }
                 .listRowBackground(Color.clear)
                 
-                // MARK: - Dados Pessoais
                 Section(header: Text("Informações Pessoais")) {
                     HStack {
-                        Text("Nome")
+                        Text("Nome") //nome do usuario
                             .frame(width: 60, alignment: .leading)
                         TextField("Digite seu nome", text: $viewModel.name)
                             .disabled(!viewModel.isEditing)
                             .foregroundColor(viewModel.isEditing ? .primary : .secondary)
+                            .focused($isInputActive)
                     }
-                    
-                    // 1. Mudamos para VStack para o erro ficar EMBAIXO do campo
+
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
-                            Text("E-mail")
+                            Text("E-mail") //email do usuario
                                 .frame(width: 60, alignment: .leading)
                             TextField("Digite seu e-mail", text: $viewModel.email)
+                                .focused($isInputActive)
                                 .keyboardType(.emailAddress)
                                 .autocapitalization(.none)
                                 .disabled(!viewModel.isEditing)
                                 .foregroundColor(viewModel.isEmailValid ? (viewModel.isEditing ? .primary : .secondary) : .red)
                                 .onChange(of: viewModel.email) { _, _ in
                                     viewModel.validateEmail()
+                                    
                                 }
                         }
-                        
-                        // 🎯 A EXPLICAÇÃO DO ERRO: Só aparece se o e-mail for inválido E se o usuário estiver editando
+                    
                         if !viewModel.isEmailValid && viewModel.isEditing {
                             Text(viewModel.emailErrorMessage)
                                 .font(.caption)
                                 .foregroundColor(.red)
-                                .padding(.leading, 64) // Alinha o texto do erro certinho embaixo do TextField
+                                .padding(.leading, 64)
                         }
                     }
                     
                     HStack {
-                        Text("Idade")
+                        Text("Idade") //idade do usuario
                             .frame(width: 60, alignment: .leading)
                         TextField("Sua idade", text: $viewModel.age)
                             .keyboardType(.numberPad)
                             .disabled(!viewModel.isEditing)
                             .foregroundColor(viewModel.isEditing ? .primary : .secondary)
+                            .focused($isInputActive)
                     }
                 }
-                
-                // MARK: - Sobre
-                Section(header: Text("Sobre mim")) {
+
+                Section(header: Text("Sobre mim")) { //bio do usuario
                     TextEditor(text: $viewModel.bio)
                         .frame(height: 80)
                         .disabled(!viewModel.isEditing)
                         .foregroundColor(viewModel.isEditing ? .primary : .secondary)
+                        .focused($isInputActive)
                 }
             }
             .navigationTitle("Perfil")
@@ -105,21 +105,23 @@ struct ProfileView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     if viewModel.isEditing {
                         Button("Salvar") {
+                            isInputActive = false //corrir o bug do teclado
                             viewModel.saveProfile()
                             withAnimation { viewModel.isEditing = false }
                         }
                         .fontWeight(.bold)
-                        .disabled(!viewModel.isEmailValid) // Trava o botão
+                        .disabled(!viewModel.isEmailValid)
                     } else {
                         Button("Editar") {
                             withAnimation { viewModel.isEditing = true }
                         }
                     }
                 }
-                
+
                 if viewModel.isEditing {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button("Cancelar") {
+                            isInputActive = false //corrir o bug do teclado
                             viewModel.loadProfile()
                             withAnimation { viewModel.isEditing = false }
                         }

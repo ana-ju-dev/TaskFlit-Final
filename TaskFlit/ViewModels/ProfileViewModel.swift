@@ -9,7 +9,7 @@ import Foundation
 
 @Observable
 class ProfileViewModel {
-    // Caixinhas de texto que a View vai ler e escrever
+
     var name: String = ""
     var email: String = ""
     var age: String = ""
@@ -28,21 +28,18 @@ class ProfileViewModel {
         self.email = profile.email
         self.age = profile.age
         self.bio = profile.bio
-        
-        // Sempre que carrega, roda a checagem inicial
+
         validateEmail()
     }
     
     func validateEmail() {
-            // Se estiver vazio, não mostra erro nenhum
             if email.isEmpty {
                 isEmailValid = true
                 emailErrorMessage = ""
                 return
             }
             
-            // Validação tradicional passo a passo
-            if !email.contains("@") {
+            if !email.contains("@") {//validacao do email
                 isEmailValid = false
                 emailErrorMessage = "O e-mail precisa conter o símbolo '@'."
             } else if !email.contains(".") {
@@ -50,7 +47,7 @@ class ProfileViewModel {
                 emailErrorMessage = "O e-mail precisa conter um ponto (ex: .com)."
             } else {
                 isEmailValid = true
-                emailErrorMessage = "" // E-mail aprovado, limpa o erro!
+                emailErrorMessage = "" 
             }
         }
     
