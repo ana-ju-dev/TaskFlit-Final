@@ -39,6 +39,7 @@ struct TaskListView: View {
                                     if let index = viewModel.allTasks.firstIndex(where: { $0.id == task.id }) {
                                         withAnimation(.easeInOut) {
                                             viewModel.allTasks.remove(at: index)
+                                            StorageService.saveTasks(viewModel.allTasks)
                                         }
                                     }
                                 }

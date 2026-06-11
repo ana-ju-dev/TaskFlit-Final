@@ -26,8 +26,10 @@ class TaskViewModel {
     }
     
     func fetchTasks() {
-        self.allTasks = StorageService.loadMockTasks()
+        // Mude de loadMockTasks() para loadTasks()
+        self.allTasks = StorageService.loadTasks()
     }
+    
     var filteredTasks: [TaskItem] {
         switch selectedFilter {
         case .all:
@@ -42,11 +44,13 @@ class TaskViewModel {
     func toggleTaskCompletion(task: TaskItem) {
         if let index = allTasks.firstIndex(where: { $0.id == task.id }) {
             allTasks[index].isCompleted.toggle()
+            StorageService.saveTasks(allTasks) // 🔥 Salva no HD!
         }
     }
 
     func addTask(_ task: TaskItem) {
         allTasks.insert(task, at: 0)
+        StorageService.saveTasks(allTasks) // 🔥 Salva no HD!
     }
     
     func deleteTask(at offsets: IndexSet) {

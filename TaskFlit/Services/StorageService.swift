@@ -7,31 +7,56 @@
 
 import Foundation
 
-class StorageService {
+struct StorageService {
     
-    static func loadMockTasks() -> [TaskItem] {
-        
-        guard let url = Bundle.main.url(forResource: "tasks", withExtension: "json") else {
-            print("o xcode nao embutiu o arquivo no app")
+    private static var fileURL: URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0].appendingPathComponent("user_tasks.json")
+    }
+    
+    static func loadTasks() -> [TaskItem] {
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            print("lendo dados salvos no HD do aparelho")
+            do {
+                let data = try Data(contentsOf: fileURL)
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                return try decoder.decode([TaskItem].self, from: data)
+            } catch {
+                print("erro ao ler o arquivo do HD: \(error)")
+            }
+        }
+        //para quando for a primeira vez do usuario usando o app
+        print("arquivo salvo não encontrado. Carregando dados iniciais de fábrica")
+        guard let mockURL = Bundle.main.url(forResource: "tasks", withExtension: "json") else {
             return []
         }
         
-        print("arquivo encontrado \(url)")
-        
         do {
-            let data = try Data(contentsOf: url)
-            print("lendo os bytes (Tamanho: \(data.count) bytes)")
-            
+            let data = try Data(contentsOf: mockURL)
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
-            
-            let tasks = try decoder.decode([TaskItem].self, from: data)
-            print("os bytes foram convertidos em \(tasks.count) objetos de tarefa.")
-            return tasks
-            
+            let factoryTasks = try decoder.decode([TaskItem].self, from: data)
+
+            saveTasks(factoryTasks)
+            return factoryTasks
         } catch {
-            print("erro de sintaxe / detalhe: \(error)")
+            print("erro ao decodificar JSON de fábrica: \(error)")
             return []
+        }
+    }
+
+    static func saveTasks(_ tasks: [TaskItem]) {
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            encoder.outputFormatting = .prettyPrinted
+            
+            let data = try encoder.encode(tasks)
+            try data.write(to: fileURL, options: [.atomic, .completeFileProtection])
+            print("dados salvos com sucesso no HD do aparelho")
+        } catch {
+            print("erro fatal ao salvar os dados: \(error)")
         }
     }
 }
