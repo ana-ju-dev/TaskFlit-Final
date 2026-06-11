@@ -27,11 +27,9 @@ struct TaskListView: View {
 
                     List {
                         if viewModel.filteredTasks.isEmpty {
-                            ContentUnavailableView(
-                                "Nenhuma Tarefa",
-                                systemImage: "doc.text.magnifyingglass",
-                                description: Text("Você não tem tarefas neste filtro.")
-                            )
+                                    EmptyStateView(currentFilter: viewModel.selectedFilter)
+                                        .listRowBackground(Color.clear) // Mantém o fundo transparente
+                                        .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
                         } else {
                             ForEach(viewModel.filteredTasks) { task in
