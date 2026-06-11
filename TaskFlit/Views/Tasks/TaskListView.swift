@@ -1,8 +1,8 @@
 //
-//  TaskListView.swift
-//  TaskFlit
+//   TaskListView.swift
+//   TaskFlit
 //
-//  Created by Ana Julia da Cunha Pereira on 06/06/26.
+//   Created by Ana Julia da Cunha Pereira on 06/06/26.
 //
 
 import SwiftUI
@@ -10,7 +10,6 @@ import SwiftUI
 struct TaskListView: View {
     
     @State private var viewModel = TaskViewModel()
-
     @State private var isShowingAddTaskSheet = false
     @State private var taskToEdit: TaskItem? = nil
     
@@ -60,21 +59,27 @@ struct TaskListView: View {
                     .listStyle(.insetGrouped)
                 }
                 
+                // 🛠️ NOVO: Botão Flutuante Expandido (Mais acessível para os pais!)
                 Button(action: {
                     isShowingAddTaskSheet = true
                 }) {
-                    Image(systemName: "plus")
-                        .font(.title.bold())
-                        .foregroundColor(.white)
-                        .frame(width: 60, height: 60)
-                        .background(Color.accentColor)
-                        .clipShape(Circle())
-                        .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 4)
+                    HStack(spacing: 6) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 16, weight: .bold))
+                        Text("Nova Tarefa")
+                            .font(.system(size: 14, weight: .bold))
+                    }
+                    .foregroundColor(.white)
+                    .frame(width: 130, height: 48) // 🔥 Largura e altura fixas para não empurrar nada!
+                    .background(Color.accentColor)
+                    .clipShape(Capsule())
+                    .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 4)
                 }
-                .padding(.trailing, 24)
-                .padding(.bottom, 24)
+                .padding(.trailing, 16)
+                .padding(.bottom, 16)
             }
             .navigationTitle("TaskFlit")
+            .searchable(text: $viewModel.searchText, prompt: "Buscar tarefa...")
             .sheet(isPresented: $isShowingAddTaskSheet) {
                 AddTaskView { newTask in
                     withAnimation(.spring()) {

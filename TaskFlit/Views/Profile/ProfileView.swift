@@ -2,13 +2,14 @@
 //  ProfileView.swift
 //  TaskFlit
 //
-//  Created by Ana Julia da Cunha Pereira on 06/06/26.
+//  Created by Ana Julia da Cunha Pereira on 11/06/26.
 //
 
 import SwiftUI
 import PhotosUI
 
 struct ProfileView: View {
+    // Conectando a View com a ViewModel que criamos
     @State private var viewModel = ProfileViewModel()
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var profileImage: Image? = nil
@@ -17,11 +18,12 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // SEÇÃO 1: FOTO
                 Section {
                     HStack {
                         Spacer()
                         VStack {
-                            PhotosPicker(selection: $selectedItem, matching: .images) { //foto de perfil
+                            PhotosPicker(selection: $selectedItem, matching: .images) {
                                 if let profileImage {
                                     profileImage
                                         .resizable()
@@ -47,29 +49,27 @@ struct ProfileView: View {
                 }
                 .listRowBackground(Color.clear)
                 
+                // SEÇÃO 2: INFORMAÇÕES PESSOAIS
                 Section(header: Text("Informações Pessoais")) {
                     HStack {
-                        Text("Nome") //nome do usuario
+                        Text("Nome")
                             .frame(width: 60, alignment: .leading)
                         TextField("Digite seu nome", text: $viewModel.name)
-                            .disabled(!viewModel.isEditing)
                             .foregroundColor(viewModel.isEditing ? .primary : .secondary)
                             .focused($isInputActive)
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
-                            Text("E-mail") //email do usuario
+                            Text("E-mail")
                                 .frame(width: 60, alignment: .leading)
                             TextField("Digite seu e-mail", text: $viewModel.email)
                                 .focused($isInputActive)
                                 .keyboardType(.emailAddress)
                                 .autocapitalization(.none)
-                                .disabled(!viewModel.isEditing)
                                 .foregroundColor(viewModel.isEmailValid ? (viewModel.isEditing ? .primary : .secondary) : .red)
                                 .onChange(of: viewModel.email) { _, _ in
                                     viewModel.validateEmail()
-                                    
                                 }
                         }
                     
@@ -82,46 +82,81 @@ struct ProfileView: View {
                     }
                     
                     HStack {
-                        Text("Idade") //idade do usuario
+                        Text("Idade")
                             .frame(width: 60, alignment: .leading)
                         TextField("Sua idade", text: $viewModel.age)
                             .keyboardType(.numberPad)
-                            .disabled(!viewModel.isEditing)
                             .foregroundColor(viewModel.isEditing ? .primary : .secondary)
                             .focused($isInputActive)
                     }
                 }
-
-                Section(header: Text("Sobre mim")) { //bio do usuario
-                    TextEditor(text: $viewModel.bio)
-                        .frame(height: 80)
-                        .disabled(!viewModel.isEditing)
-                        .foregroundColor(viewModel.isEditing ? .primary : .secondary)
-                        .focused($isInputActive)
+                
+                // 📊 SEÇÃO 3: CENTRAL DE PRODUTIVIDADE
+                Section(header: Text("Minha Produtividade")) {
+                    HStack(spacing: 0) {
+                        VStack(spacing: 6) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                                Text("Concluídas")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            Text("\(viewModel.completedTasksCount)")
+                                .font(.title.bold())
+                                .foregroundColor(.primary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        
+                        Divider()
+                            .frame(height: 40)
+                        
+                        VStack(spacing: 6) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "clock.fill")
+                                    .foregroundColor(.orange)
+                                Text("Pendentes")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            Text("\(viewModel.pendingTasksCount)")
+                                .font(.title.bold())
+                                .foregroundColor(.primary)
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .padding(.vertical, 8)
                 }
             }
             .navigationTitle("Perfil")
+            .onAppear {
+                // Recarrega os números das tarefas sempre que a tela abrir
+                viewModel.loadTaskStats()
+            }
+            .onChange(of: isInputActive) { _, newValue in
+                if newValue == true {
+                    withAnimation(.easeInOut) {
+                        viewModel.isEditing = true
+                    }
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     if viewModel.isEditing {
                         Button("Salvar") {
-                            isInputActive = false //corrir o bug do teclado
+                            isInputActive = false
                             viewModel.saveProfile()
                             withAnimation { viewModel.isEditing = false }
                         }
                         .fontWeight(.bold)
                         .disabled(!viewModel.isEmailValid)
-                    } else {
-                        Button("Editar") {
-                            withAnimation { viewModel.isEditing = true }
-                        }
                     }
                 }
 
                 if viewModel.isEditing {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button("Cancelar") {
-                            isInputActive = false //corrir o bug do teclado
+                            isInputActive = false
                             viewModel.loadProfile()
                             withAnimation { viewModel.isEditing = false }
                         }
@@ -138,4 +173,8 @@ struct ProfileView: View {
             }
         }
     }
+}
+
+#Preview {
+    ProfileView()
 }

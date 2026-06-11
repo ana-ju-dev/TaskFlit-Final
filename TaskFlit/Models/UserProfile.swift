@@ -11,7 +11,6 @@ struct UserProfile {
     var name: String
     var email: String
     var age: String
-    var bio: String
 }
 
 class UserProfileManager {
@@ -20,7 +19,6 @@ class UserProfileManager {
         static let name = "profile_name"
         static let email = "profile_email"
         static let age = "profile_age"
-        static let bio = "profile_bio"
     }
     
     static func saveProfile(_ profile: UserProfile) {
@@ -28,7 +26,6 @@ class UserProfileManager {
         defaults.set(profile.name, forKey: Keys.name)
         defaults.set(profile.email, forKey: Keys.email)
         defaults.set(profile.age, forKey: Keys.age)
-        defaults.set(profile.bio, forKey: Keys.bio)
     }
     
     static func getProfile() -> UserProfile {
@@ -37,7 +34,6 @@ class UserProfileManager {
             name: defaults.string(forKey: Keys.name) ?? "",
             email: defaults.string(forKey: Keys.email) ?? "",
             age: defaults.string(forKey: Keys.age) ?? "",
-            bio: defaults.string(forKey: Keys.bio) ?? ""
         )
     }
 }

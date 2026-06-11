@@ -10,8 +10,8 @@ import Foundation
 @Observable
 class TaskViewModel {
     var allTasks: [TaskItem] = []
-    
     var selectedFilter: AppFilter = .all
+    var searchText: String = ""
     
     enum AppFilter: String, CaseIterable, Identifiable {
         case all = "Todas"
@@ -28,18 +28,28 @@ class TaskViewModel {
     func fetchTasks() {
         self.allTasks = StorageService.loadTasks()
     }
-    
+
     var filteredTasks: [TaskItem] {
+        
+        let tasksByStatus: [TaskItem]
+        
         switch selectedFilter {
         case .all:
-            return allTasks
+            tasksByStatus = allTasks
         case .pending:
-            return allTasks.filter { !$0.isCompleted }
+            tasksByStatus = allTasks.filter { !$0.isCompleted }
         case .completed:
-            return allTasks.filter { $0.isCompleted }
+            tasksByStatus = allTasks.filter { $0.isCompleted }
+        }
+
+        if searchText.isEmpty {
+            return tasksByStatus
+        } else {
+            return tasksByStatus.filter { task in
+                task.title.localizedCaseInsensitiveContains(searchText)
+            }
         }
     }
-    
     func toggleTaskCompletion(task: TaskItem) {
         if let index = allTasks.firstIndex(where: { $0.id == task.id }) {
             allTasks[index].isCompleted.toggle()
