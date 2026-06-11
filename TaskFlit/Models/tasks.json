@@ -1,24 +1,10 @@
 
 [
  {
-    "title": "Estudar Flutter",
-    "description": "Aprimorar meus conhecimentos",
-    "dueDate": "2026-07-01T10:00:00Z",
-    "priority": "medium",
-    "isCompleted": false
-  },
-  {
-    "title": "Entregar o App TaskFlit",
-    "description": "Desenvolver App para o Processo Seletivo da Flit",
-    "dueDate": "2026-06-12T08:00:00Z",
-    "priority": "high",
-    "isCompleted": false
-  },
-  {
-    "title": "Passar na primeira fase do Processo Seletivo da Flit",
-    "description": "Item essencial para evolucao como desenvolvedora",
-    "dueDate": "2026-06-05T18:30:00Z",
+    "title": "Crie Sua Primeira Tarefa",
+    "description": "Adicione mais informções da sua tarefa",
+    "dueDate": "2026-06-15T10:00:00Z",
     "priority": "low",
-    "isCompleted": true
+    "isCompleted": false
   }
 ]
