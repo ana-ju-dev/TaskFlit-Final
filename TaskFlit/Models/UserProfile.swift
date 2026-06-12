@@ -30,7 +30,7 @@ class UserProfileManager { //lidando com os dados
         defaults.set(profile.age, forKey: Keys.age)
         defaults.set(profile.imageData, forKey: Keys.imageData)
         
-        if let data = profile.imageData {
+        if let data = profile.imageData { //verificando como a imagem ta sendo tratado
                 print("DEBUG: Salvando imagem com \(data.count) bytes")
                 defaults.set(data, forKey: Keys.imageData)
             } else {

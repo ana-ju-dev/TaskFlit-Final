@@ -55,11 +55,9 @@ struct StorageService {
             let data = try encoder.encode(tasks)
             try data.write(to: fileURL, options: [.atomic, .completeFileProtection])
             print("dados salvos com sucesso no HD do aparelho")
-//        } catch {
-//            print("erro fatal ao salvar os dados: \(error)")
-//        }
+
         } catch {
-            print("❌ ERRO DETALHADO:")
+            print("ERRO DETALHADO:")
             if let decodingError = error as? DecodingError {
                 switch decodingError {
                 case .keyNotFound(let key, _):
