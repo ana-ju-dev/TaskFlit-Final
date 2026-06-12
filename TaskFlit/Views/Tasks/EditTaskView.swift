@@ -50,19 +50,22 @@ struct EditTaskView: View {
             .navigationTitle("Editar Tarefa")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { //cancelar e deixar como tava antes
-                    Button("Cancelar") { dismiss() }
+                
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancelar") {
+                        dismiss()
+                    }
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Salvar") { //salvar as modificacoes
+                    Button("Salvar") {
                         let updatedTask = TaskItem(
-                            id: originalTask.id, //mantem o ID original da tarefa
+                            id: originalTask.id,
                             title: title,
                             description: description,
                             dueDate: dueDate,
                             priority: priority,
-                            isCompleted: originalTask.isCompleted //mesmo quando salvar o id permenece
+                            isCompleted: originalTask.isCompleted
                         )
                         onSave(updatedTask)
                         dismiss()

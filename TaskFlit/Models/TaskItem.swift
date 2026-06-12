@@ -25,14 +25,16 @@ enum TaskPriority: String, Codable, CaseIterable, Identifiable {//classificacao
 
 
 struct TaskItem: Identifiable, Codable { //estrutura dos dados
-    var id: UUID = UUID() //identificador unico pra nao misturar as tarefas
+    var id: UUID = UUID() //gerado automaticamente
     var title: String
     var description: String
     var dueDate: Date
     var priority: TaskPriority
     var isCompleted: Bool
     
+    
     enum CodingKeys: String, CodingKey {//lidando com o json
         case title, description, dueDate, priority, isCompleted
     }
+    
 }

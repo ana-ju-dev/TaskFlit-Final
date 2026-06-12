@@ -55,8 +55,25 @@ struct StorageService {
             let data = try encoder.encode(tasks)
             try data.write(to: fileURL, options: [.atomic, .completeFileProtection])
             print("dados salvos com sucesso no HD do aparelho")
+//        } catch {
+//            print("erro fatal ao salvar os dados: \(error)")
+//        }
         } catch {
-            print("erro fatal ao salvar os dados: \(error)")
+            print("❌ ERRO DETALHADO:")
+            if let decodingError = error as? DecodingError {
+                switch decodingError {
+                case .keyNotFound(let key, _):
+                    print("Chave não encontrada: \(key.stringValue)")
+                case .typeMismatch(let type, let context):
+                    print("Tipo incompatível: \(type). Contexto: \(context.debugDescription)")
+                case .valueNotFound(let type, _):
+                    print("Valor nulo inesperado para o tipo: \(type)")
+                case .dataCorrupted(let context):
+                    print("Dados corrompidos: \(context.debugDescription)")
+                @unknown default:
+                    print("Erro desconhecido: \(error)")
+                }
+            }
         }
     }
 }
