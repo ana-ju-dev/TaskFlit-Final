@@ -44,7 +44,7 @@ O código está organizado seguindo fielmente o padrão de arquitetura de pastas
    git clone https://github.com/ana-ju-dev/TaskFlit.git
 
 2. **Abra o projeto:**
-   * Navegue até a pasta do projeto.
+   * Entre na pasta do projeto `TaskFlit`.
    * Dê dois cliques no arquivo `TaskFlit.xcodeproj` para abri-lo automaticamente no Xcode.
 
 3. **Selecione o Simulador:**
