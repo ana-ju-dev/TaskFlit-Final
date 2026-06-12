@@ -9,7 +9,7 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileView: View {
-    // Conectando a View com a ViewModel que criamos
+
     @State private var viewModel = ProfileViewModel()
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var profileImage: Image? = nil
@@ -18,7 +18,6 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // SEÇÃO 1: FOTO
                 Section {
                     HStack {
                         Spacer()
@@ -49,7 +48,6 @@ struct ProfileView: View {
                 }
                 .listRowBackground(Color.clear)
                 
-                // SEÇÃO 2: INFORMAÇÕES PESSOAIS
                 Section(header: Text("Informações Pessoais")) {
                     HStack {
                         Text("Nome")
@@ -90,8 +88,7 @@ struct ProfileView: View {
                             .focused($isInputActive)
                     }
                 }
-                
-                // 📊 SEÇÃO 3: CENTRAL DE PRODUTIVIDADE
+  
                 Section(header: Text("Minha Produtividade")) {
                     HStack(spacing: 0) {
                         VStack(spacing: 6) {
@@ -130,7 +127,6 @@ struct ProfileView: View {
             }
             .navigationTitle("Perfil")
             .onAppear {
-                // Recarrega os números das tarefas sempre que a tela abrir
                 viewModel.loadTaskStats()
             }
             .onChange(of: isInputActive) { _, newValue in

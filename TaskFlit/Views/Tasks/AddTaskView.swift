@@ -30,10 +30,16 @@ struct AddTaskView: View {
                         )
                     TextField("Descrição (Opcional)", text: $description)
                 }
-
+ 
                 Section(header: Text("Prazo e Importância")) {
-                    DatePicker("Data de Entrega", selection: $dueDate, displayedComponents: [.date, .hourAndMinute])
-                        .environment(\.locale, Locale(identifier: "pt_BR"))
+                    DatePicker(
+                        "Data de Vencimento",
+                        selection: $dueDate,
+                        in: Date.now...,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                    .datePickerStyle(.compact)
+                    .environment(\.locale, Locale(identifier: "pt_BR"))
                     
                     Picker("Prioridade", selection: $priority) {
                         ForEach(TaskPriority.allCases) { priorityCase in

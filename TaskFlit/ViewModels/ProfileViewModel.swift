@@ -17,7 +17,6 @@ class ProfileViewModel {
     var isEmailValid: Bool = true
     var emailErrorMessage: String = ""
     
-    // 📊 Contadores para a Central de Conquistas
     var completedTasksCount: Int = 0
     var pendingTasksCount: Int = 0
     
@@ -26,7 +25,6 @@ class ProfileViewModel {
         loadTaskStats()
     }
     
-    // 🔄 Carrega os dados usando o SEU UserProfileManager
     func loadProfile() {
         let profile = UserProfileManager.getProfile()
         self.name = profile.name
@@ -36,20 +34,17 @@ class ProfileViewModel {
         validateEmail()
     }
     
-    // 💾 Salva os dados usando o SEU UserProfileManager
     func saveProfile() {
         let newProfile = UserProfile(name: name, email: email, age: age)
         UserProfileManager.saveProfile(newProfile)
     }
     
-    // 🧮 Conta as tarefas vindo do seu StorageService
     func loadTaskStats() {
         let allTasks = StorageService.loadTasks()
         self.completedTasksCount = allTasks.filter { $0.isCompleted }.count
         self.pendingTasksCount = allTasks.filter { !$0.isCompleted }.count
     }
     
-    // Validação de E-mail
     func validateEmail() {
         if email.isEmpty {
             isEmailValid = true

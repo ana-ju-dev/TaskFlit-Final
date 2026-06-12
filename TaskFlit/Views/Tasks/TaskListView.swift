@@ -29,11 +29,32 @@ struct TaskListView: View {
 
                     List {
                         if viewModel.filteredTasks.isEmpty {
-                            EmptyStateView(currentFilter: viewModel.selectedFilter)
+                            if !viewModel.searchText.isEmpty {
+                                VStack(spacing: 12) {
+                                    Image(systemName: "magnifyingglass")
+                                        .font(.system(size: 40))
+                                        .foregroundColor(.gray.opacity(0.7))
+                                        .padding(.top, 40)
+                                    
+                                    Text("Nenhum resultado encontrado")
+                                        .font(.headline)
+                                        .foregroundColor(.secondary)
+                                    
+                                    Text("Não encontramos tarefas correspondentes a \"\(viewModel.searchText)\".")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 24)
+                                }
+                                .frame(maxWidth: .infinity)
                                 .listRowBackground(Color.clear)
                                 .listRowSeparator(.hidden)
+                            } else {
+                                EmptyStateView(currentFilter: viewModel.selectedFilter)
+                                    .listRowBackground(Color.clear)
+                                    .listRowSeparator(.hidden)
+                            }
                         } else {
-                            
                             ForEach(viewModel.filteredTasks) { task in
                                 TaskRowView(task: task) {
                                     if let index = viewModel.allTasks.firstIndex(where: { $0.id == task.id }) {
@@ -59,7 +80,6 @@ struct TaskListView: View {
                     .listStyle(.insetGrouped)
                 }
                 
-                // 🛠️ NOVO: Botão Flutuante Expandido (Mais acessível para os pais!)
                 Button(action: {
                     isShowingAddTaskSheet = true
                 }) {
@@ -70,7 +90,7 @@ struct TaskListView: View {
                             .font(.system(size: 14, weight: .bold))
                     }
                     .foregroundColor(.white)
-                    .frame(width: 130, height: 48) // 🔥 Largura e altura fixas para não empurrar nada!
+                    .frame(width: 130, height: 48)
                     .background(Color.accentColor)
                     .clipShape(Capsule())
                     .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 4)

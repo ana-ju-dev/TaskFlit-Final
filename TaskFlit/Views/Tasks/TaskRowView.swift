@@ -22,8 +22,8 @@ struct TaskRowView: View {
     }
     
     var body: some View {
-        HStack(spacing: 16) {
-   
+        HStack(spacing: 14) {
+  
             Button(action: {
                 onCheckToggle()
             }) {
@@ -32,36 +32,42 @@ struct TaskRowView: View {
                     .foregroundColor(task.isCompleted ? .green : .gray)
             }
             .buttonStyle(.plain)
-            
-            VStack(alignment: .leading, spacing: 4) {
+
+            VStack(alignment: .leading, spacing: 6) {
+                // Título
                 Text(task.title)
                     .font(.headline)
                     .strikethrough(task.isCompleted, color: .gray)
                     .foregroundColor(task.isCompleted ? .secondary : .primary)
-                
+
                 if !task.description.isEmpty {
                     Text(task.description)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .lineLimit(1)
                 }
-                
-                HStack {
-                    Text(task.dueDate.formatted(date: .abbreviated, time: .omitted))
-                    Spacer()
+
+                HStack(spacing: 12) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "calendar")
+                        Text(task.dueDate.formatted(date: .abbreviated, time: .shortened))
+                    }
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+
                     Text(task.priority.title)
                         .font(.caption2)
                         .fontWeight(.bold)
                         .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(priorityColor.opacity(0.2))
+                        .padding(.vertical, 3)
+                        .background(priorityColor.opacity(0.15))
                         .foregroundColor(priorityColor)
                         .cornerRadius(4)
                 }
-                .font(.caption)
-                .foregroundColor(.secondary)
             }
             
+            Spacer()
+
             Button(action: {
                 onDeleteAction()
             }) {
@@ -72,6 +78,6 @@ struct TaskRowView: View {
             }
             .buttonStyle(.plain)
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 4)
     }
 }
