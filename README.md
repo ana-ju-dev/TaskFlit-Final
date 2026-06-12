@@ -51,17 +51,17 @@ O código está organizado seguindo fielmente o padrão de arquitetura de pastas
    * Na barra superior do Xcode, escolha o dispositivo simulador de sua preferência (ex: *iPhone 17*).
 
 4. **Execute o App:**
-   4.1. **Se Usar o Simulador do Xcode**
-      * Pressione o atalho `Cmd + R` no teclado ou clique no botão **Play (▶)** localizado no canto superior esquerdo do Xcode.
-   4.2.   **Se Usar um Dispositivo IOS (iPhone)**
-     * Conecte o dispositivo no mac via cabo
-     * Nas opções de simulador, procure o nome do seu dispositivo e selecione.
-     * Rode o app.
-     * Abra os ajustes do dipositivo.
-     * Na aba de pesquisa digite "VPN",
-     * Aperte na segunda opção "Gestão de VPN e Dispositivo".
-     * Na aba "App do Deenvolvedor", aperte no email do desenvolvedor.
-     * Aperte em "Confiar em "email@desenvolvedor".
+4.1. **Se Usar o Simulador do Xcode**
+   * Pressione o atalho `Cmd + R` no teclado ou clique no botão **Play (▶)** localizado no canto superior esquerdo do Xcode.
+4.2.   **Se Usar um Dispositivo IOS (iPhone)**
+   * Conecte o dispositivo no mac via cabo
+   * Nas opções de simulador, procure o nome do seu dispositivo e selecione.
+   * Rode o app.
+   * Abra os ajustes do dipositivo.
+   * Na aba de pesquisa digite "VPN",
+   * Aperte na segunda opção "Gestão de VPN e Dispositivo".
+   * Na aba "App do Deenvolvedor", aperte no email do desenvolvedor.
+   * Aperte em "Confiar em "email@desenvolvedor".
 
 ---
 
