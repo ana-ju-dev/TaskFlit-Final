@@ -127,6 +127,12 @@ struct ProfileView: View {
             .navigationTitle("Perfil")
             .onAppear {
                 viewModel.loadTaskStats()
+                viewModel.loadProfile()
+                
+                //convertendo os dados carregados pelo ViewModel em uma imagem exibivel
+                if let data = viewModel.profileImageData, let uiImage = UIImage(data: data) {
+                    profileImage = Image(uiImage: uiImage)
+                }
             }
             .onChange(of: isInputActive) { _, newValue in
                 if newValue == true {
@@ -158,17 +164,22 @@ struct ProfileView: View {
                     }
                 }
             }
+
             .onChange(of: selectedItem) { _, newValue in
                 Task {
                     if let data = try? await newValue?.loadTransferable(type: Data.self),
                        let uiImage = UIImage(data: data) {
+
                         profileImage = Image(uiImage: uiImage)
+
+                        viewModel.profileImageData = data
                     }
                 }
             }
+            }
         }
     }
-}
+
 
 #Preview {
     ProfileView()

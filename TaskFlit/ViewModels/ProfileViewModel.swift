@@ -12,6 +12,7 @@ class ProfileViewModel {
     var name: String = ""
     var email: String = ""
     var age: String = ""
+    var profileImageData: Data?
     var isEditing: Bool = false
     var isEmailValid: Bool = true
     var emailErrorMessage: String = ""
@@ -24,18 +25,19 @@ class ProfileViewModel {
     }
     
     func loadProfile() { //ponte pra atualizar o que ta salvo na memoria
-        let profile = UserProfileManager.getProfile()
-        self.name = profile.name
-        self.email = profile.email
-        self.age = profile.age
-
-        validateEmail()
-    }
+            let profile = UserProfileManager.getProfile()
+            self.name = profile.name
+            self.email = profile.email
+            self.age = profile.age
+            self.profileImageData = profile.imageData 
+            validateEmail()
+        }
     
-    func saveProfile() {//ponte pra atualizar o que ta salvo na memoria tambem
-        let newProfile = UserProfile(name: name, email: email, age: age)
-        UserProfileManager.saveProfile(newProfile)
-    }
+    func saveProfile() {
+            //ponte pra atualizar o que ta salvo na memoria tambem
+            let newProfile = UserProfile(name: name, email: email, age: age, imageData: profileImageData)
+            UserProfileManager.saveProfile(newProfile)
+        }
     
     func loadTaskStats() { //carrega as tarefas filtradas
         let allTasks = StorageService.loadTasks()
