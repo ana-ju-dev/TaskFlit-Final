@@ -11,6 +11,7 @@ struct EmptyStateView: View {
 
     let currentFilter: TaskViewModel.AppFilter
 
+    //todas as "private var" sao variaveis que entendem a situacao da cada filtro "todas, concluidas ou pendentes" e veem se estao vazia ou nao e exibem de acordo com o filtro pro usuario
     private var iconName: String {
         switch currentFilter {
         case .all: return "clipboard"

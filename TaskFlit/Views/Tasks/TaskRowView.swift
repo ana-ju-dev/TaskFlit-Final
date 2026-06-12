@@ -9,11 +9,12 @@ import SwiftUI
 
 struct TaskRowView: View {
 
+    //as variaveis recebem os dados e manda pra viewmodel
     let task: TaskItem
     var onDeleteAction: () -> Void
     var onCheckToggle: () -> Void
     
-    private var priorityColor: Color {
+    private var priorityColor: Color { //estilizando as cores das prioridades
         switch task.priority {
         case .high: return .red
         case .medium: return .orange
@@ -27,17 +28,16 @@ struct TaskRowView: View {
             Button(action: {
                 onCheckToggle()
             }) {
-                Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
+                Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle") //marcando a bolinha quando o usuario aperta para conluir a tarefa
                     .font(.title2)
                     .foregroundColor(task.isCompleted ? .green : .gray)
             }
             .buttonStyle(.plain)
 
             VStack(alignment: .leading, spacing: 6) {
-                // Título
                 Text(task.title)
                     .font(.headline)
-                    .strikethrough(task.isCompleted, color: .gray)
+                    .strikethrough(task.isCompleted, color: .gray) //deixando o texto riscado quando concluido
                     .foregroundColor(task.isCompleted ? .secondary : .primary)
 
                 if !task.description.isEmpty {
@@ -69,7 +69,7 @@ struct TaskRowView: View {
             Spacer()
 
             Button(action: {
-                onDeleteAction()
+                onDeleteAction() //botao de deletar
             }) {
                 Image(systemName: "trash")
                     .font(.title3)

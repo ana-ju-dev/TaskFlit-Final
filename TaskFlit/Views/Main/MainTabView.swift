@@ -9,8 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     var body: some View {
-        TabView {
-
+        TabView { //criando o componente inferior pra navegar entre as telas
             TaskListView()
                 .tabItem {
                     Label("Tarefas", systemImage: "checklist")
@@ -24,6 +23,3 @@ struct MainTabView: View {
     }
 }
 
-#Preview {
-    MainTabView()
-}

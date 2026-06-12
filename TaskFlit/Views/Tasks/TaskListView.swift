@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TaskListView: View {
-    
+    //os dados vem da viewmodel
     @State private var viewModel = TaskViewModel()
     @State private var isShowingAddTaskSheet = false
     @State private var taskToEdit: TaskItem? = nil
@@ -18,7 +18,7 @@ struct TaskListView: View {
             ZStack(alignment: .bottomTrailing) {
                 
                 VStack(spacing: 0) {
-                    Picker("Filtro", selection: $viewModel.selectedFilter) {
+                    Picker("Filtro", selection: $viewModel.selectedFilter) { //criando botoes pra navegar entre os filtros de tarefas
                         ForEach(TaskViewModel.AppFilter.allCases) { filter in
                             Text(filter.rawValue).tag(filter)
                         }
@@ -28,7 +28,7 @@ struct TaskListView: View {
                     .background(Color(.systemBackground))
 
                     List {
-                        if viewModel.filteredTasks.isEmpty {
+                        if viewModel.filteredTasks.isEmpty { //exibindo as tarefas ou os filtros de vazios
                             if !viewModel.searchText.isEmpty {
                                 VStack(spacing: 12) {
                                     Image(systemName: "magnifyingglass")
@@ -80,7 +80,7 @@ struct TaskListView: View {
                     .listStyle(.insetGrouped)
                 }
                 
-                Button(action: {
+                Button(action: { //botao intuitivo de criar nova tarefa
                     isShowingAddTaskSheet = true
                 }) {
                     HStack(spacing: 6) {

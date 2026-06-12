@@ -18,7 +18,7 @@ struct EditTaskView: View {
     let originalTask: TaskItem
     var onSave: (TaskItem) -> Void
 
-    init(task: TaskItem, onSave: @escaping (TaskItem) -> Void) {
+    init(task: TaskItem, onSave: @escaping (TaskItem) -> Void) {//carregando os dados do formulário de tarefas
         self.originalTask = task
         self.onSave = onSave
 
@@ -30,7 +30,7 @@ struct EditTaskView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
+            Form { //deixando o usuario editar os dados
                 Section(header: Text("Editar Informações")) {
                     TextField("Título da tarefa", text: $title)
                     TextField("Descrição (Opcional)", text: $description)
@@ -50,19 +50,19 @@ struct EditTaskView: View {
             .navigationTitle("Editar Tarefa")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
+                ToolbarItem(placement: .cancellationAction) { //cancelar e deixar como tava antes
                     Button("Cancelar") { dismiss() }
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Salvar") {
+                    Button("Salvar") { //salvar as modificacoes
                         let updatedTask = TaskItem(
-                            id: originalTask.id,
+                            id: originalTask.id, //mantem o ID original da tarefa
                             title: title,
                             description: description,
                             dueDate: dueDate,
                             priority: priority,
-                            isCompleted: originalTask.isCompleted
+                            isCompleted: originalTask.isCompleted //mesmo quando salvar o id permenece
                         )
                         onSave(updatedTask)
                         dismiss()

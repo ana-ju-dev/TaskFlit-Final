@@ -9,11 +9,10 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileView: View {
-
-    @State private var viewModel = ProfileViewModel()
+    @State private var viewModel = ProfileViewModel() //comunicando com a viewmodel
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var profileImage: Image? = nil
-    @FocusState private var isInputActive: Bool
+    @FocusState private var isInputActive: Bool //verificando se o usuario tocou nos campos para ativar a edicao
     
     var body: some View {
         NavigationStack {
@@ -22,7 +21,7 @@ struct ProfileView: View {
                     HStack {
                         Spacer()
                         VStack {
-                            PhotosPicker(selection: $selectedItem, matching: .images) {
+                            PhotosPicker(selection: $selectedItem, matching: .images) { //vendo se tem imagem de perfil ou nao - componentes nativos
                                 if let profileImage {
                                     profileImage
                                         .resizable()
@@ -48,7 +47,7 @@ struct ProfileView: View {
                 }
                 .listRowBackground(Color.clear)
                 
-                Section(header: Text("Informações Pessoais")) {
+                Section(header: Text("Informações Pessoais")) { //formularios do perfil
                     HStack {
                         Text("Nome")
                             .frame(width: 60, alignment: .leading)
@@ -89,7 +88,7 @@ struct ProfileView: View {
                     }
                 }
   
-                Section(header: Text("Minha Produtividade")) {
+                Section(header: Text("Minha Produtividade")) { //exibindo no perfil a quantidade de tarefas concluidas e pendentes
                     HStack(spacing: 0) {
                         VStack(spacing: 6) {
                             HStack(spacing: 6) {
@@ -136,7 +135,7 @@ struct ProfileView: View {
                     }
                 }
             }
-            .toolbar {
+            .toolbar { //so deixa os botoes de salvar e cancelar aparecendo se tiver no modo de edicao
                 ToolbarItem(placement: .navigationBarTrailing) {
                     if viewModel.isEditing {
                         Button("Salvar") {

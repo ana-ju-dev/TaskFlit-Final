@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddTaskView: View {
     @Environment(\.dismiss) var dismiss
-
+//semore olhando o que o usuario ta digitando
     @State private var title: String = ""
     @State private var description: String = ""
     @State private var dueDate: Date = Date()
@@ -20,9 +20,9 @@ struct AddTaskView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
+            Form { //organizando os campos
                 Section(header: Text("Informações Básicas")) {
-                    TextField("Título da tarefa", text: $title)
+                    TextField("Título da tarefa", text: $title)//se o usuario nao digitar nada e clicar em salvat, aparece uma borda vermelha
                         .padding(showErrorAlert ? 8 : 0)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
@@ -41,7 +41,7 @@ struct AddTaskView: View {
                     .datePickerStyle(.compact)
                     .environment(\.locale, Locale(identifier: "pt_BR"))
                     
-                    Picker("Prioridade", selection: $priority) {
+                    Picker("Prioridade", selection: $priority) {//puxando as prioridades
                         ForEach(TaskPriority.allCases) { priorityCase in
                             Text(priorityCase.title).tag(priorityCase)
                         }
@@ -58,7 +58,7 @@ struct AddTaskView: View {
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Salvar") {
+                    Button("Salvar") { //salvando com validacao do campo
                         if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                             withAnimation(.spring(response: 0.2, dampingFraction: 0.2, blendDuration: 0.2)) {
                                 showErrorAlert = true
